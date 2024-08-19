@@ -1,9 +1,14 @@
 {
-  "name": "root",
+  "name": "passkey-login-trial",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "start:server": "lerna run start --scope=server",
+    "start:web": "lerna run dev --scope=web",
+    "start": "lerna run start"
+  },
   "dependencies": {},
   "devDependencies": {
     "lerna": "^8.1.8"

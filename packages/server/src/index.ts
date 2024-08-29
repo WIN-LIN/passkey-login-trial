@@ -10,7 +10,7 @@ declare module "express-session" {
   interface SessionData {
     name?: string;
     currentChallenge?: string;
-    credentialID?: string;
+    isLoggedIn?: boolean;
   }
 }
 

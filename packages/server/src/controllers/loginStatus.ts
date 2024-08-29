@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 export const checkLogin = async (req: Request, res: Response) => {
-  if (req.session.name) {
+  if (req.session.name && req.session.isLoggedIn) {
     res.status(200).json({ name: req.session.name });
   } else {
     res.status(401).json({ error: "Unauthorized" });

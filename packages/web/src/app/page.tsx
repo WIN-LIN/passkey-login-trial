@@ -28,6 +28,7 @@ export default function Home() {
       }
     } catch (e) {
       console.error(e);
+      setLoggedInUserName("");
     } finally {
       setIsInit(true);
     }
@@ -95,6 +96,8 @@ export default function Home() {
         duration: 1000,
         isClosable: true,
       });
+
+      await checkIsLogin();
     } catch (e) {
       console.error("registration error", e);
       toast({

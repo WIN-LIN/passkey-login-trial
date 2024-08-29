@@ -19,10 +19,11 @@ export class UserService {
     }
   }
 
+  // user with credentialID means officially registered.
   async getUserInfo(name: string) {
     try {
       const result = await redisClient.hgetall(`${this.userPrefix}${name}`);
-      if (Object.keys(result).length === 0) {
+      if (Object.keys(result).length === 0 || !result.credentialID) {
         return null;
       }
       return result;

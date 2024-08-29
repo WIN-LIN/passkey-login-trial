@@ -63,15 +63,15 @@ export const verifySignData = async (req: Request, res: Response) => {
     console.log("VerifiedAuthenticationResponse", verification);
 
     if (verification.verified) {
+      req.session.name = name;
+      req.session.isLoggedIn = true;
       res.status(200).json({ message: "login succeed!" });
     } else {
       res.status(400).json({ verified: false });
     }
   } catch (error) {
     console.error("verifySignData error", error);
+    req.session.destroy;
     res.status(500).json({ error });
-  } finally {
-    req.session.name = undefined;
-    req.session.currentChallenge = undefined;
   }
 };

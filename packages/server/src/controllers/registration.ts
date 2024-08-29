@@ -41,6 +41,7 @@ export const createRegistrationOptions = async (
 
     res.status(200).json(credentialOption);
   } catch (error) {
+    req.session.destroy;
     res.status(500).json(error);
   }
 };
@@ -54,17 +55,11 @@ export const verifyRegistration = async (req: Request, res: Response) => {
   }
 
   try {
-    const user = await userService.getUserInfo(name);
-    if (!user) {
-      res.status(400).json({ error: "User not registered" });
-      return;
-    }
     console.log("credential to be verified", req.body);
     const verification = await verifyRegistrationResponse({
       response: req.body as RegistrationResponseJSON,
-      expectedChallenge: currentChallenge, // clientDataObj
-      expectedOrigin: "http://localhost:3000", // FE
-      // requireUserVerification: true,
+      expectedChallenge: currentChallenge,
+      expectedOrigin: "http://localhost:3000",
     });
 
     console.log("verification", verification);
@@ -79,15 +74,16 @@ export const verifyRegistration = async (req: Request, res: Response) => {
         counter,
       });
 
+      req.session.isLoggedIn = true;
+      req.session.name = name;
+
       res.status(200).json({ message: "registration succeed!" });
     } else {
       res.status(400).json({ message: "registration failed!" });
     }
   } catch (error) {
+    req.session.destroy;
     console.log("error", error);
     res.status(500).json({ error });
-  } finally {
-    req.session.name = undefined;
-    req.session.currentChallenge = undefined;
   }
 };
